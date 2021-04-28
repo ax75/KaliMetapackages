@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
-
+#Array which contains user selected packages.
 AptArgs=()
 
+#Dynamically creates menu with index and returns Selection to main. 
 function createMenu(){
 
 while true; do
@@ -44,6 +45,7 @@ while true; do
 done
 }
 
+#Function to create loading pattern when installing packages.
 function load(){
 	sleep 3
 	pattern=0
@@ -66,28 +68,38 @@ function load(){
 		let t+=1
 	done
 }
+
+#Function which executes package INSTALLATION.
 function apt(){
 	clear
 	echo "-----------------------"
 	echo "| INSTALLING PACKAGES |"
 	echo "-----------------------"
-	Packages=($@)
-	for x in "${Packages[@]}"; do
-		echo "=>Installing $x" 
-	done
-	load &
-	 if sudo apt-get -q install -y ${Packages[@]} > ial.log; then
-		kill $! 
-		echo
-		echo "--------------------------------------"
-		echo "|=>=>=>=INSTALLED SUCCESSFULLY=<=<=<=|" 
-		echo "--------------------------------------"
+	if ping -c 1 4.2.2.2 > ial.log ; then
+		Packages=($@)
+		for x in "${Packages[@]}"; do
+			echo "=>Installing $x" 
+		done
+		load &
+	 	if sudo apt-get -q install -y ${Packages[@]} > ial.log; then
+			kill $! 
+			echo
+			echo "--------------------------------------"
+			echo "|=>=>=>=INSTALLED SUCCESSFULLY=<=<=<=|" 
+			echo "--------------------------------------"
+		else
+			echo "Error! Occured cannot install..."
+		fi
+		echo -ne "\n"
+	else
+		echo "Cannot connect to Internet...."
 	fi
-	echo -ne "\n"
+
         read -p "Process done press any key to Continue..."
 	unset AptArgs[@]	
 }
 
+#Function which calls and manages the whole tool.
 function main(){
 	sudo ls
         Menu=(
