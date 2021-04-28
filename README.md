@@ -5,7 +5,6 @@
 ## This tool automates the installation of KALI Linux Metapackages.
 
 ## How To Use
-## -----------
   Select the package to place it into INSTALLATION Stack, Once done select 8) INSTALL in MainMenu.
 
 ## Logs
